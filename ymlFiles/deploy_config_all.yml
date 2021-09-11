@@ -1,0 +1,90 @@
+cluster: local
+num_servers: 10
+num_readers: 3
+num_writers: 2
+name_to_processtype:
+  reader-1: 0
+  reader-2: 0
+  reader-3: 0
+  server-1: 2
+  server-2: 2
+  server-3: 2
+  server-4: 2
+  server-5: 2
+  server-6: 2
+  server-7: 2
+  server-8: 2
+  server-9: 2
+  server-10: 2
+  writer-1: 1
+  writer-2: 1
+controller:
+- 127.0.0.1
+- "9999"
+max_num_obj: 10000
+max_obj_size: 10000
+min_obj_size: 1
+servers:
+  server-1:
+  - 127.0.0.1
+  - "9001"
+  - "9501"
+  server-2:
+  - 127.0.0.1
+  - "9002"
+  - "9502"
+  server-3:
+  - 127.0.0.1
+  - "9003"
+  - "9503"
+  server-4:
+  - 127.0.0.1
+  - "9004"
+  - "9504"
+  server-5:
+  - 127.0.0.1
+  - "9005"
+  - "9505"
+  server-6:
+  - 127.0.0.1
+  - "9006"
+  - "9506"
+  server-7:
+  - 127.0.0.1
+  - "9007"
+  - "9507"
+  server-8:
+  - 127.0.0.1
+  - "9008"
+  - "9508"
+  server-9:
+  - 127.0.0.1
+  - "9009"
+  - "9509"
+  server-10:
+  - 127.0.0.1
+  - "9010"
+  - "9510"
+readers:
+  reader-1:
+  - 127.0.0.1
+  - "7001"
+  - "7501"
+  reader-2:
+  - 127.0.0.1
+  - "7002"
+  - "7502"
+  reader-3:
+  - 127.0.0.1
+  - "7003"
+  - "7503"
+writers:
+  writer-1:
+  - 127.0.0.1
+  - "8001"
+  - "8501"
+  writer-2:
+  - 127.0.0.1
+  - "8002"
+  - "8502"
+whoami: ""

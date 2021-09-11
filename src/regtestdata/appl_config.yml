@@ -1,0 +1,11 @@
+numobjects: 100
+numreadoperations: 0
+numwriteoperations: 0
+wait_time_btw_op: 0
+foldertostore: /data
+usedisk: false
+defaultalgorithm: ABD
+num_servers_per_object: 8
+default_erasurecode_rate: 0.8
+default_file_size: 10000240
+masterobjcatalogue: {}

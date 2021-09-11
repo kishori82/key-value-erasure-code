@@ -1,0 +1,15 @@
+# $Id: libstatgrab.pc.in,v 1.4 2004/06/21 21:41:45 tdb Exp $
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+bin_owner=root
+bin_group=
+bin_perm=4755
+
+Name: libstatgrab
+Description: Provides a useful interface to system statistics
+Version: 0.17
+Libs: -L${libdir} -lstatgrab 
+Cflags: -I${includedir}

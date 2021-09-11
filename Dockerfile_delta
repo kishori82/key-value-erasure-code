@@ -1,0 +1,10 @@
+#docker build -t  ercost/default:stable  -f core/Dockerfile_delta   .
+FROM ercost/x:1
+
+RUN rm -rf /ercost/core/src
+COPY core/src /ercost/core/src
+
+RUN export GODEBUG=cgocheck=0
+
+#compile the go code
+RUN cd /ercost/core/src/  && make &&  chmod 777 process.sh

@@ -1,0 +1,6 @@
+[submodule "submodules/erasure"]
+	path = submodules/erasure
+	url = https://github.com/ercost/erasure
+[submodule "submodules/zmq"]
+	path = submodules/zmq
+	url = https://github.com/Ercost/zmq

@@ -1,0 +1,51 @@
+Application Parameters
+---------------------
+Ths tells what kind of execution you want to run.
+
+Number of objects
+Object Size
+Algorithm per object (to be chosen from among supported algorithms)
+Algorithm Parameters (")
+Algorithm execution Parameters - write pattern, read pattern, number of writers, number of readers,
+ 
+Any other experiment Parameters : Failure pattern etc
+
+
+Service Parameters
+------------------
+
+Deployment Parameters - total number of processes,  process type for each, max number of objects per process, max file size, min file size,
+Supported Algorithm Parameters- what algorithms does the service support. Defaults for each of those.
+Communication Parameters: Ports, communication library (currently there is only zmq)
+Coding Parameters - What is the coding library (currently only kodo).
+-------------------------------------------------------------------------------
+
+Algorithm Src to Do List
+--------------------------
+
+A. For PRAKIS
+-------------
+
+There are a few things that can be done to improve the speed of operations, and these are specifically due to the nature of the 
+implementation. 
+
+1. In the way we implement point to point channel, we first poll zmq sockets that have packets, and then receive from them. 
+In this case, it makes sense to read the content of each of these packets, and possibly use them, even if we have already received
+K packets that the algorithm phase expects. For example, consider the first phase of read operation. It is likely that we poll 
+N sockets, and it can happen that there is a subset of K sockets that have common tag. But becuase we only receive from the first
+K (and we simply discard the remaining packets in the current implementation), we miss out on the possibility of decoding in phase 1
+itself
+
+2. It makes sense to retain the list of the coded elements corresponding to max tag from phase 1, while listening to phase 2 durin
+the read operation. This way, the read can potentially complete faster.
+
+
+To Do 3/12/2018
+---------------
+
+1. Fail in between an operation
+2. Time limit code checkin
+3. thourough check of everything so far
+
+
+To Do 

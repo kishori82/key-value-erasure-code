@@ -1,0 +1,17 @@
+numobjects: 10
+numreadoperations: 0
+numwriteoperations: 0
+wait_time_btw_op: 1
+wait_time_btw_reads: 1
+wait_time_btw_writes: 1
+foldertostore: /tmp/ercost
+usedisk: false
+defaultalgorithm: SODA_WITH_LIST
+num_servers_per_object: 5
+default_erasurecode_rate: 0.6
+default_file_size: 10240
+masterobjcatalogue: {}
+objectpickdistribution: uniform
+writerfailureprobability: 0
+readerfailureprobability: 0
+loginterval: 1

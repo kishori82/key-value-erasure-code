@@ -1,0 +1,187 @@
+numobjects: 10
+numreadoperations: 0
+numwriteoperations: 0
+wait_time_btw_op: 1
+wait_time_btw_reads: 1
+wait_time_btw_writes: 1
+foldertostore: /tmp/ercost
+usedisk: false
+defaultalgorithm: SODA_WITH_LIST
+num_servers_per_object: 5
+default_erasurecode_rate: 0.6
+default_file_size: 10240
+masterobjcatalogue:
+  Object-1:
+    numservers: 5
+    servers_names:
+    - server-1
+    - server-10
+    - server-2
+    - server-3
+    - server-4
+    objname: Object-1
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-2:
+    numservers: 5
+    servers_names:
+    - server-9
+    - server-1
+    - server-10
+    - server-2
+    - server-3
+    objname: Object-2
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-3:
+    numservers: 5
+    servers_names:
+    - server-6
+    - server-7
+    - server-8
+    - server-9
+    - server-1
+    objname: Object-3
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-4:
+    numservers: 5
+    servers_names:
+    - server-2
+    - server-3
+    - server-4
+    - server-5
+    - server-6
+    objname: Object-4
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-5:
+    numservers: 5
+    servers_names:
+    - server-8
+    - server-9
+    - server-1
+    - server-10
+    - server-2
+    objname: Object-5
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-6:
+    numservers: 5
+    servers_names:
+    - server-2
+    - server-3
+    - server-4
+    - server-5
+    - server-6
+    objname: Object-6
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-7:
+    numservers: 5
+    servers_names:
+    - server-5
+    - server-6
+    - server-7
+    - server-8
+    - server-9
+    objname: Object-7
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-8:
+    numservers: 5
+    servers_names:
+    - server-7
+    - server-8
+    - server-9
+    - server-1
+    - server-10
+    objname: Object-8
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-9:
+    numservers: 5
+    servers_names:
+    - server-5
+    - server-6
+    - server-7
+    - server-8
+    - server-9
+    objname: Object-9
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+  Object-10:
+    numservers: 5
+    servers_names:
+    - server-6
+    - server-7
+    - server-8
+    - server-9
+    - server-1
+    objname: Object-10
+    algorithm: SODA_WITH_LIST
+    file_size: 10240
+    codeparams:
+      coden: 5
+      codek: 3
+      rate: 0.6
+      coding_algorithm: Cauchy
+      filesize: 10240
+objectpickdistribution: uniform
+writerfailureprobability: 0
+readerfailureprobability: 0
+loginterval: 1

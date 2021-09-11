@@ -1,0 +1,29 @@
+reader:
+    image: ercost/x:2
+    command: /ercost/core/src/process.sh reader-1 
+    volumes:
+        - /tmp:/tmp/
+    environment:
+      - GODEBUG="cgocheck=0"
+
+writer:
+    image: ercost/x:2
+    command: /ercost/core/src/process.sh writer-1 
+    environment:
+      - GODEBUG='cgocheck=0'
+    volumes:
+        - /tmp:/tmp/
+
+server:
+    image: ercost/x:2
+    command: /ercost/core/src/process.sh server-1 
+    environment:
+      - GODEBUG="cgocheck=0"
+    volumes:
+        - /tmp:/tmp/
+
+controller:
+    image: ercost/x:2
+    command: /ercost/core/src/process.sh controller 
+    environment:
+      - GODEBUG="cgocheck=0"

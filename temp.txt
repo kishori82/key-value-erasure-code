@@ -1,0 +1,200 @@
+diff --git a/src/analytics/expAnalyzer.go b/src/analytics/expAnalyzer.go
+index 0c0b915..c65d31e 100644
+--- a/src/analytics/expAnalyzer.go
++++ b/src/analytics/expAnalyzer.go
+@@ -440,8 +440,6 @@ func getBandwidthStats(logroot string, processType string, numClients int) (Tota
+ 			}
+ 
+ 			line := scanner.Text()
+-
+-                        fmt.Println(line)
+ 			fields := strings.Split(line, " ")
+ 			bandin, _ = strconv.Atoi(fields[4])
+ 			bandout, _ = strconv.Atoi(fields[5])
+diff --git a/src/daemons/client.go b/src/daemons/client.go
+index 60ea079..c185bb6 100644
+--- a/src/daemons/client.go
++++ b/src/daemons/client.go
+@@ -151,8 +151,9 @@ func (c *Client) QueryServers() {
+ 	message_to_send := CreateGobFromMessage(message)
+ 
+ 	for _, server := range c.params.Servers_names {
++
+ 		c.connection[server].SendBytes(message_to_send.Bytes(), NON_BLOCKING)
+-		serverMessageCountUp(server)
++
+ 	}
+ 
+ }
+@@ -171,9 +172,8 @@ func (c *Client) WriteToServers(TagValue_var TagValue) {
+ 	message_to_send := CreateGobFromMessage(message)
+ 
+ 	for _, server := range c.params.Servers_names {
+-		c.connection[server].SendBytes(message_to_send.Bytes(), NON_BLOCKING)
+-		serverMessageCountUp(server)
+ 
++		c.connection[server].SendBytes(message_to_send.Bytes(), NON_BLOCKING)
+ 	}
+ 
+ }
+@@ -220,7 +220,9 @@ func (w *Client) ReceiveTagsFromQuorum(quorum_size int) []Tag {
+ 
+ // Function returns number of ACKS received
+ func (w *Client) ReceiveAcksFromQuorum(quorum_size int) int {
++
+ 	messages_rx := w.ReceiveMessagesFromQuorum(quorum_size)
++
+ 	return len(messages_rx)
+ }
+ 
+@@ -245,11 +247,9 @@ func (w *Client) ReceiveMessagesFromQuorum(quorum_size int) []Message {
+ 	for num_responses < quorum_size {
+ 		sockets, _ := w.poller.Poll(-1)
+ 		for _, socket := range sockets {
++
+ 			msgBytes, _ := socket.Socket.RecvBytes(0) // keeping this line out of the if loop helps to drain out un-necessary
+ 			// messages from the channel without processing them
+-			message1 := CreateMessageFromGob(msgBytes)
+-			serverMessageCountDown(message1.Sender)
+-			AppLog.Printf("SENDER %v %v", message1.Sender, server_response[message1.Sender])
+ 			if num_responses < quorum_size {
+ 				message := CreateMessageFromGob(msgBytes)
+ 				if w.isMessageUseful(message.Opnum, message.Objname, message.Phase) {
+diff --git a/src/daemons/client_application.go b/src/daemons/client_application.go
+index d2c01c8..e80d2c4 100755
+--- a/src/daemons/client_application.go
++++ b/src/daemons/client_application.go
+@@ -66,8 +66,6 @@ func Reader_process() {
+ 	r.initObjectSelector()
+ 	timelimit = time.Now().UnixNano() * 2
+ 
+-	initializeMiscellaneousVariables()
+-
+ 	for {
+ 		if r.hasFailed() {
+ 			r.emulateNewClient()
+@@ -160,8 +158,6 @@ func Writer_process() {
+ 	w.initObjectSelector()
+ 
+ 	timelimit = time.Now().UnixNano() * 2
+-
+-	initializeMiscellaneousVariables()
+ 	for {
+ 		if w.hasFailed() {
+ 			w.emulateNewClient()
+@@ -224,8 +220,6 @@ func doARead(r *Client) {
+ 		AppLog.Println("FOR_SAFETY_CHECK: ", "READ", processParams.name, objectname, Opnum, int64(start.UnixNano()/1e3), int64(end.UnixNano()/1e3), TagValue_var.Tag_var.Client_id, TagValue_var.Tag_var.Version_num, dataSafe)
+ 	}
+ 
+-	writeMonitoredStats()
+-
+ 	if ENBALE_EXP_LOGS {
+ 		getOperationParams(r)
+ 		opParams.TotalTime = elapsed
+@@ -289,7 +283,6 @@ func doAWrite(w *Client) {
+ 	if CHECK_SAFETY {
+ 		AppLog.Println("FOR_SAFETY_CHECK: ", "WRITE", processParams.name, objectname, Opnum, int64(start.UnixNano()/1e3), int64(end.UnixNano()/1e3), Tag_var.Client_id, Tag_var.Version_num, seed)
+ 	}
+-	writeMonitoredStats()
+ 
+ 	if ENBALE_EXP_LOGS {
+ 		getOperationParams(w)
+diff --git a/src/daemons/communications.go b/src/daemons/communications.go
+index 2eb8b94..68488cd 100644
+--- a/src/daemons/communications.go
++++ b/src/daemons/communications.go
+@@ -9,35 +9,10 @@ import (
+ 
+ 	zmq3 "github.com/pebbe/zmq3"
+ 	//"math/rand"
+-	"strconv"
++	//"strconv"
+ 	//"time"
+ )
+ 
+-var server_response map[string]int
+-
+-func initializeMiscellaneousVariables() {
+-	server_response = make(map[string]int)
+-	serversToConnect := get_keys(deployParams.Servers)
+-	for _, servername := range serversToConnect {
+-		server_response[servername] = 0
+-	}
+-}
+-func serverMessageCountUp(servername string) {
+-	server_response[servername] = server_response[servername] + 1
+-}
+-func serverMessageCountDown(servername string) {
+-	server_response[servername] = server_response[servername] - 1
+-}
+-
+-func writeMonitoredStats() {
+-	serversToConnect := get_keys(deployParams.Servers)
+-	line := "SERVER RESPONSES"
+-	for _, servername := range serversToConnect {
+-		line = line + " " + strconv.Itoa(server_response[servername])
+-	}
+-	AppLog.Printf("%s", line)
+-}
+-
+ func get_ip_and_applport(process_name string) string {
+ 	return get_ip_and_port(process_name, HTTP_PORT_IDX)
+ }
+diff --git a/src/daemons/consts.go b/src/daemons/consts.go
+index fdd7497..8100757 100644
+--- a/src/daemons/consts.go
++++ b/src/daemons/consts.go
+@@ -81,5 +81,5 @@ const NO = "NO"
+ 
+ // ZMQ constants
+ 
+-const MAX_BACKLOG = 10000
+-const NON_BLOCKING = 0 // Put 0 for blocking
++const MAX_BACKLOG = 100
++const NON_BLOCKING = 1 // Put 0 for blocking
+diff --git a/src/daemons/server.go b/src/daemons/server.go
+index 0dbd2d7..e156987 100755
+--- a/src/daemons/server.go
++++ b/src/daemons/server.go
+@@ -65,23 +65,18 @@ func server_daemon() {
+ 	initializeStateVariables()
+ 	// Set the ZMQ sockets
+ 
+-	var unique_tag string
+ 	frontend, _ := zmq3.NewSocket(zmq3.ROUTER)
+ 	defer frontend.Close()
+-
+ 	if processParams.remoteConfiguration {
+ 		frontend.Bind("tcp://*:" + ALGO_PORT)
+-		unique_tag = ALGO_PORT
+ 	} else {
+ 		frontend.Bind("tcp://" + get_ip_and_algoport(processParams.name))
+-		unique_tag = processParams.name
+ 	}
+-	
+ 
+ 	//  Backend socket talks to workers over inproc
+ 	backend, _ := zmq3.NewSocket(zmq3.DEALER)
+ 	defer backend.Close()
+-	backend.Bind("inproc://backend-" + unique_tag)
++	backend.Bind("inproc://backend")
+ 
+ 	AppLog.Println("frontend router", "tcp://"+get_ip_and_algoport(processParams.name))
+ 	go server_worker()
+@@ -98,15 +93,7 @@ func server_worker() {
+ 	var respond bool
+ 	worker, _ := zmq3.NewSocket(zmq3.DEALER)
+ 	defer worker.Close()
+-
+-	var unique_tag string
+-	if processParams.remoteConfiguration {
+-		unique_tag = ALGO_PORT
+-	} else {
+-		unique_tag = processParams.name
+-	}
+-
+-	worker.Connect("inproc://backend-" + unique_tag)
++	worker.Connect("inproc://backend")
+ 	msg_reply := make([][]byte, 2)
+ 
+ 	for i := 0; i < len(msg_reply); i++ {

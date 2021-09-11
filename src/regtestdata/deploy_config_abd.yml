@@ -1,0 +1,13 @@
+cluster: local
+num_servers: 10
+num_readers: 5
+num_writers: 5
+name_to_processtype: {}
+controller: []
+max_num_obj: 10000
+max_obj_size: 10000
+min_obj_size: 1
+servers: {}
+readers: {}
+writers: {}
+whoami: ""

@@ -1,0 +1,70 @@
+#docker build --no-cache -t  ercost/x:1 -f core/Dockerfile_ubuntu   .
+
+FROM ubuntu
+
+#  update 
+RUN apt-get update
+
+# intall vim
+RUN apt-get install -y vim
+
+#  install  git
+RUN apt-get install -y git
+RUN git config --global user.email "kishori82@gmail.com"
+RUN git config --global user.name  "kishori82"
+
+
+
+#  install  goland
+RUN apt-get install --fix-missing  -y golang
+
+# install clibs
+#RUN apt-get install build-base gcc abuild binutils binutils-doc gcc-doc
+
+
+# basic setup
+RUN mkdir -p /opt/gocode
+
+ENV GOROOT=/usr/lib/go
+ENV GOPATH=/opt/gocode
+
+# install gorilla
+RUN go get -u github.com/gorilla/mux
+
+# install yml parser
+RUN go get gopkg.in/yaml.v2
+
+COPY core  /ercost/core
+
+# environments
+ENV GODEBUG=cgocheck=0
+ENV PATH=$GOROOT/bin:$GOPATH/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/lib:/usr/local/lib
+
+#installing ZMQ 
+RUN cd /ercost/core/submodules/zmq && tar -xvf zeromq-3.2.5.tar && cd  /ercost/core/submodules/zmq/zeromq-3.2.5 && ./configure && make && make install
+
+#installing CZMQ
+RUN cd /ercost/core/submodules/zmq && tar -xvf czmq-3.0.2.tar &&  cd /ercost/core/submodules/zmq/czmq-3.0.2 && ./configure && make && make install
+
+# unzip the libstatgrab 
+RUN cd /ercost/core/src/ &&  tar -zxvf libstatgrab-0.17.tar.gz 
+
+ # install libstatgrab
+RUN cd /ercost/core/src/libstatgrab-0.17/ && ./configure && make && make install
+
+
+#install pebbe zmq3
+RUN go get github.com/pebbe/zmq3
+
+#install yasm
+RUN apt-get install yasm
+
+
+
+# compiling the intal I-SAL
+RUN export GODEBUG="cgocheck=0" && cd /ercost/core/submodules/erasure && go generate
+
+#copy vimrm
+COPY core/vimrc.txt /root/.vimrc
+

@@ -1,0 +1,13 @@
+numobjects: 10
+numreadoperations: 0
+numwriteoperations: 0
+wait_time_btw_op: 1
+wait_time_btw_reads: 1
+wait_time_btw_writes: 1
+foldertostore: /tmp/ercost
+usedisk: false
+defaultalgorithm: ABD
+num_servers_per_object: 5
+default_erasurecode_rate: 0.9
+default_file_size: 102400
+masterobjcatalogue: {}
